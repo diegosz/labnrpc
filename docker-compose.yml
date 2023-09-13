@@ -1,0 +1,33 @@
+version: "3.5"
+
+networks:
+  intranet:
+
+
+x-logging:
+  # extension fields added since docker-compose v3.4
+  &default-logging
+  driver: "json-file"
+  options:
+    max-size: "50m"
+    max-file: "3"
+
+services:
+
+  nats:
+    image: nats:2.9.22-scratch
+    ports:
+      - 4222:4222
+      - 8222:8222
+      - 8444:8444 # ws
+    networks:
+      - intranet
+    entrypoint: /nats-server
+    command: "--config /config/ns01.conf"
+    volumes:
+      - ${PWD}/config/nats:/config:ro
+      - nats-ns01-data:/data/nats-server:rw
+    logging: *default-logging
+
+volumes:
+  nats-ns01-data:

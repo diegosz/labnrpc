@@ -1,0 +1,15 @@
+openapiOptions:
+  file:
+    - file: provisioningpb/api.proto
+      option:
+        info:
+          title: Provisioning
+          version: "1.0.0"
+        basePath: /
+  method:
+    - method: provisioningpb.ProvisioningService.SayHello
+      option:
+        operationId: sayHello
+        tags:
+          - Greeting
+        summary: Sends a greeting
