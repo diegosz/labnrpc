@@ -6,6 +6,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"os/exec"
 	"os/signal"
 	"runtime"
 	"sync/atomic"
@@ -49,9 +50,12 @@ func main() {
 	}()
 
 	// Do this block only if you generated the code with the prometheus plugin.
-	fmt.Println("Check metrics at http://localhost:6060/metrics.")
+	metricsURL := fmt.Sprintf("http://localhost:%d/metrics", 6060)
+	fmt.Printf("Check metrics at %s\n", metricsURL)
 	http.Handle("/metrics", promhttp.Handler())
 	go http.ListenAndServe(":6060", nil)
+
+	_ = exec.Command("xdg-open", metricsURL).Start()
 
 	fmt.Println("Server is running, Ctrl+C to quit.")
 	c := make(chan os.Signal, 1)
