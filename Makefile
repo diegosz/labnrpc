@@ -33,3 +33,16 @@ example:
 	tmux send-keys -t "ntest:0.3" "go run cmd/server/main.go" Enter
 	tmux attach -t ntest
 	tmux kill-session -t ntest
+
+example2:
+	tmux new-session -d -s ntest
+	tmux split-window -t "ntest:0"   -v
+	tmux split-window -t "ntest:0.1" -h -p 66
+	tmux split-window -t "ntest:0.2" -h -p 50
+	tmux select-pane -t "ntest:0.0"
+	tmux send-keys -t "ntest:0.0" "go run cmd/server/main.go" Enter
+	tmux send-keys -t "ntest:0.1" "sleep 2 && go run cmd/client/main.go" Enter
+	tmux send-keys -t "ntest:0.2" "sleep 2 && go run cmd/client/main.go" Enter
+	tmux send-keys -t "ntest:0.3" "sleep 3 && go run cmd/client/main.go" Enter
+	tmux attach -t ntest
+	tmux kill-session -t ntest
